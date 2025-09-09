@@ -44,6 +44,31 @@ class _HomePageState extends State<HomePage> {
           },
         );
       }
+      if (await battery.isInBatterySaveMode && !popEconomia) {
+        popEconomia = true;
+        await showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              content: Text(
+                'Seu dispositivo está no modo economia de energia, alguns recursos podem ser limitados.',
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: corRoxoMedio,
+                    foregroundColor: corClara,
+                  ),
+                  child: Text('Fechar'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     });
   }
 

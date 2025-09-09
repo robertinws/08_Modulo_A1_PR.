@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 String caminhoCanal = 'com.example.modulo_a1_pr';
 Battery battery = Battery();
-bool popBateria = false, popInternet = false;
+bool popBateria = false, popInternet = false, popEconomia = false;
 BuildContext? contexto;
-EventChannel eventInternet = EventChannel('$caminhoCanal/internet');
+EventChannel eventInternet = EventChannel('$caminhoCanal/internet'),
+    eventFones = EventChannel('$caminhoCanal/fones');
 ValueNotifier<bool> valueConexao = ValueNotifier(false);

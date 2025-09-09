@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import androidx.annotation.NonNull;
@@ -14,11 +15,12 @@ import io.flutter.plugin.common.EventChannel;
 public class MainActivity extends FlutterActivity {
 
     String caminhoCanal = "com.example.modulo_a1_pr";
-    private BroadcastReceiver broadInternet;
-    private EventChannel.EventSink eventInternet;
+    private BroadcastReceiver broadInternet, broadFones;
+    private EventChannel.EventSink eventInternet, eventFones;
 
     @Override
     protected void onDestroy() {
+        unregisterReceiver(broadFones);
         unregisterReceiver(broadInternet);
         super.onDestroy();
     }
@@ -34,12 +36,33 @@ public class MainActivity extends FlutterActivity {
             }
         };
 
+        broadFones = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                eventFones.success(verificarFones());
+            }
+        };
+
         new EventChannel(flutterEngine.getDartExecutor(), caminhoCanal + "/internet").setStreamHandler(new EventChannel.StreamHandler() {
             @Override
             public void onListen(Object arguments, EventChannel.EventSink events) {
                 eventInternet = events;
                 registerReceiver(broadInternet, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
                 events.success(verificarConexao());
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+
+            }
+        });
+
+        new EventChannel(flutterEngine.getDartExecutor(), caminhoCanal + "/fones").setStreamHandler(new EventChannel.StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink events) {
+                eventFones = events;
+                registerReceiver(broadFones, new IntentFilter(AudioManager.ACTION_HEADSET_PLUG));
+                events.success(verificarFones());
             }
 
             @Override
@@ -64,6 +87,19 @@ public class MainActivity extends FlutterActivity {
 
             }
 
+        }
+
+        return  false;
+
+    }
+
+    private boolean verificarFones() {
+
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        if (audioManager.isWiredHeadsetOn()) {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, ((int) (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) * 0.7)) , 0);
+            return  true;
         }
 
         return  false;

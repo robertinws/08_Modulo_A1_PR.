@@ -20,6 +20,17 @@ class _LoadingPageState extends State<LoadingPage> {
     eventInternet.receiveBroadcastStream().listen((value) {
       valueConexao.value = value;
     });
+    eventFones.receiveBroadcastStream().listen((value) {
+      if (value) {
+        ScaffoldMessenger.of(contexto!).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Fone de ouvido conectado, o volume do dispositivo foi diminuído em 70%',
+            ),
+          ),
+        );
+      }
+    });
     battery.onBatteryStateChanged.listen((value) async {
       if (await battery.batteryLevel <= 20 && !popBateria) {
         popBateria = true;
