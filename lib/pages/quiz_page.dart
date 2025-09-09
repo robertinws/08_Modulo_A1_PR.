@@ -17,6 +17,8 @@ class _QuizPageState extends State<QuizPage> {
   bool confirmar = false;
   int score = 0;
   String tipo = '';
+  double rotacao = 0.1;
+  bool animando = false, entradaFeita = false, entradaVF = false;
 
   @override
   void initState() {
@@ -70,6 +72,10 @@ class _QuizPageState extends State<QuizPage> {
           duration: Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
+        if (paginaAtual == 1 && !entradaFeita) {
+          entradaFeita = true;
+          entradaAnimacao();
+        }
       }
       setState(() {});
     } else {
@@ -84,6 +90,38 @@ class _QuizPageState extends State<QuizPage> {
           : null;
       setState(() {});
     }
+  }
+
+  void entradaAnimacao() async {
+    await Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        entradaVF = true;
+        animando = true;
+      });
+    });
+    await Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        rotacao = 0.2;
+        alternativaSelecionada = 1;
+      });
+    });
+    await Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        rotacao = 0.1;
+        alternativaSelecionada = 0;
+      });
+    });
+    await Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        entradaVF = false;
+        alternativaSelecionada = -1;
+      });
+    });
+    await Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        animando = false;
+      });
+    });
   }
 
   @override
@@ -184,28 +222,59 @@ class _QuizPageState extends State<QuizPage> {
                           spacing: 20,
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: animando
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        alternativaSelecionada = 0;
+                                      });
+                                    },
                               child: Text(
                                 'Verdadeiro',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
+                                  color: alternativaSelecionada == 0
+                                      ? corRoxoMedio
+                                      : corEscuro,
                                 ),
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: animando
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        alternativaSelecionada = 1;
+                                      });
+                                    },
                               child: Text(
                                 'Falso',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
+                                  color: alternativaSelecionada == 1
+                                      ? corRoxoMedio
+                                      : corEscuro,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        Icon(Icons.screen_rotation, size: 100),
+                        AnimatedOpacity(
+                          opacity: entradaVF ? 1 : 0,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.easeInOut,
+                          child: AnimatedRotation(
+                            turns: rotacao,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeInOut,
+                            child: Icon(
+                              Icons.screen_rotation,
+                              size: 100,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -301,7 +370,7 @@ class _QuizPageState extends State<QuizPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: encerrar,
+                onPressed: animando ? null : encerrar,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: corRoxoMedio,
                   foregroundColor: corClara,
@@ -309,7 +378,9 @@ class _QuizPageState extends State<QuizPage> {
                 child: Text('Encerrar'),
               ),
               ElevatedButton(
-                onPressed: paginaAtual == 2
+                onPressed: animando
+                    ? null
+                    : paginaAtual == 2
                     ? proximo
                     : alternativaSelecionada == -1
                     ? null
