@@ -74,6 +74,173 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      drawer: Drawer(
+        child: Column(
+          spacing: 10,
+          children: [
+            DrawerHeader(
+              child: Stack(
+                children: [
+                  Center(
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: corRoxoMedio,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        'assets/images/pessoa4.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      size: 40,
+                      color: corRoxoMedio,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {},
+                        title: Text(
+                          'Home',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        textColor: corRoxoMedio,
+                      ),
+                      Divider(color: corRoxoMedio),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {},
+                        title: Text(
+                          'QuizMyBrain',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        textColor: corRoxoMedio,
+                      ),
+                      Divider(color: corRoxoMedio),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {},
+                        title: Text(
+                          'GeniusPLay',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        textColor: corRoxoMedio,
+                      ),
+                      Divider(color: corRoxoMedio),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {},
+                        title: Text(
+                          'MemoCheck',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        textColor: corRoxoMedio,
+                      ),
+                      Divider(color: corRoxoMedio),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {},
+                        title: Text(
+                          'Sair',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        textColor: corRoxoMedio,
+                      ),
+                      Divider(color: corRoxoMedio),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 15,
+          children: [
+            Image.asset(
+              height: 100,
+              'assets/images/logo.png',
+              fit: BoxFit.cover,
+            ),
+            Text(
+              'Bem-vindo ao Aprender+',
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
