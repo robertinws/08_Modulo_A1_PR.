@@ -20,6 +20,14 @@ class _HomePageState extends State<HomePage> {
     iniciar();
   }
 
+  @override
+  void reassemble() {
+    super.reassemble();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
+
   void iniciar() async {
     listPerguntas = jsonDecode(
       await rootBundle.loadString('assets/jsons/bancoQuestoes.json'),
@@ -80,6 +88,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

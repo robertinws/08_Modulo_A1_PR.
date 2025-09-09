@@ -12,8 +12,41 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   PageController pageController = PageController();
-  int paginaAtual = 0, perguntaAtual = 0;
+  int paginaAtual = 0, perguntaAtual = 0, alternativaSelecionada = -1;
   List<String> listIdentificadores = ['a)', 'b)', 'c)', 'd)'];
+  bool confirmar = false;
+  int score = 0;
+  String tipo = '';
+
+  void encerrar() async {}
+
+  void proximo() async {
+    if (confirmar) {
+      confirmar = false;
+      alternativaSelecionada = -1;
+      perguntaAtual++;
+      if (tipo != listPerguntas[perguntaAtual]['tipo']) {
+        paginaAtual++;
+        await pageController.animateToPage(
+          paginaAtual,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+      setState(() {});
+    } else {
+      confirmar = true;
+      listPerguntas[perguntaAtual]['resposta'] ==
+              alternativaSelecionada
+          ? score =
+                score +
+                int.parse(
+                  listPerguntas[perguntaAtual]['peso'].toString(),
+                )
+          : null;
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +55,9 @@ class _QuizPageState extends State<QuizPage> {
           ? [DeviceOrientation.landscapeRight]
           : [DeviceOrientation.portraitUp],
     );
+    tipo = listPerguntas[perguntaAtual]['tipo'];
     return Scaffold(
+      backgroundColor: corClara,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -31,6 +66,7 @@ class _QuizPageState extends State<QuizPage> {
         foregroundColor: corRoxoMedio,
       ),
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
           paginaAtual == 0
@@ -51,9 +87,34 @@ class _QuizPageState extends State<QuizPage> {
                         Column(
                           children: List.generate(4, (index) {
                             return ListTile(
-                              onTap: () {},
+                              tileColor:
+                                  confirmar &&
+                                      listPerguntas[perguntaAtual]['resposta'] ==
+                                          index &&
+                                      confirmar
+                                  ? corRoxoMedio
+                                  : corClara,
+                              textColor:
+                                  listPerguntas[perguntaAtual]['resposta'] ==
+                                          index &&
+                                      confirmar
+                                  ? corClara
+                                  : alternativaSelecionada == index
+                                  ? corRoxoMedio
+                                  : corEscuro,
+                              onTap: confirmar
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        alternativaSelecionada =
+                                            index;
+                                      });
+                                    },
                               title: Text(
                                 '${listIdentificadores[index]} ${listPerguntas[perguntaAtual]['alternativas'][index]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             );
                           }),
@@ -202,7 +263,7 @@ class _QuizPageState extends State<QuizPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: encerrar,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: corRoxoMedio,
                   foregroundColor: corClara,
@@ -210,7 +271,11 @@ class _QuizPageState extends State<QuizPage> {
                 child: Text('Encerrar'),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: paginaAtual == 2
+                    ? proximo
+                    : alternativaSelecionada == -1
+                    ? null
+                    : proximo,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: corRoxoMedio,
                   foregroundColor: corClara,
