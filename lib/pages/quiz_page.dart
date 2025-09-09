@@ -24,6 +24,23 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     contexto = context;
+    iniciar();
+  }
+
+  void iniciar() async {
+    eventSensor.receiveBroadcastStream().listen((value) {
+      if (paginaAtual == 1) {
+        if (value > 3) {
+          setState(() {
+            alternativaSelecionada = 0;
+          });
+        } else if (value < 0 && value < -3) {
+          setState(() {
+            alternativaSelecionada = 1;
+          });
+        }
+      }
+    });
   }
 
   void encerrar() async {

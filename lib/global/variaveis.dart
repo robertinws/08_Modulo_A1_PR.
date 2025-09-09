@@ -7,6 +7,7 @@ Battery battery = Battery();
 bool popBateria = false, popInternet = false, popEconomia = false;
 BuildContext? contexto;
 EventChannel eventInternet = EventChannel('$caminhoCanal/internet'),
-    eventFones = EventChannel('$caminhoCanal/fones');
+    eventFones = EventChannel('$caminhoCanal/fones'),
+    eventSensor = EventChannel('$caminhoCanal/sensor');
 ValueNotifier<bool> valueConexao = ValueNotifier(false);
 List<dynamic> listPerguntas = [];

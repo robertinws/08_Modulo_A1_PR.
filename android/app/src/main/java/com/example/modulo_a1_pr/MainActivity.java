@@ -4,6 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,6 +21,9 @@ public class MainActivity extends FlutterActivity {
     String caminhoCanal = "com.example.modulo_a1_pr";
     private BroadcastReceiver broadInternet, broadFones;
     private EventChannel.EventSink eventInternet, eventFones;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private SensorEventListener  sensorEventListener;
 
     @Override
     protected void onDestroy() {
@@ -28,6 +35,9 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         broadInternet = new BroadcastReceiver() {
             @Override
@@ -68,6 +78,32 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onCancel(Object arguments) {
 
+            }
+        });
+
+        new EventChannel(flutterEngine.getDartExecutor(), caminhoCanal + "/sensor").setStreamHandler(new EventChannel.StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink events) {
+
+                sensorEventListener = new SensorEventListener() {
+                    @Override
+                    public void onSensorChanged(SensorEvent event) {
+                        float valor = event.values[0];
+                        events.success(valor);
+                    }
+
+                    @Override
+                    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                    }
+                };
+                sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+                sensorManager.unregisterListener(sensorEventListener);
             }
         });
 
