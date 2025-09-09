@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -25,6 +26,9 @@ class _MemoPageState extends State<MemoPage> {
       listImages2 = ['car1.jpg', 'car2.jpg', 'car3.jpg', 'car4.jpg'];
   int tema = 0;
   String start = 'START';
+  Timer? timer;
+  bool acaoClick = true, iniciado = false;
+  int cont = 0;
 
   @override
   void initState() {
@@ -33,8 +37,62 @@ class _MemoPageState extends State<MemoPage> {
     iniciar();
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   void iniciar() async {
     listarCards();
+  }
+
+  void startar() async {
+    if (iniciado) {
+      timer?.cancel();
+      cont = 0;
+      start = 'START';
+      setState(() {});
+    } else {
+      acaoClick = false;
+      int temp = 4;
+      setState(() {});
+      timer = Timer.periodic(Duration(seconds: 1), (_) {
+        if (iniciado) {
+          setState(() {
+            cont++;
+          });
+        }
+        if (temp != 0) {
+          temp--;
+        }
+        switch (temp) {
+          case 3:
+            start = '3';
+            setState(() {});
+            break;
+          case 2:
+            start = '2';
+            setState(() {});
+            break;
+          case 1:
+            start = '1';
+            setState(() {});
+            break;
+          case 0:
+            if (!iniciado) {
+              start = 'STOP';
+              acaoClick = true;
+              iniciado = true;
+              for (var card in listCards) {
+                card['visivel'] = false;
+              }
+              setState(() {});
+            }
+            break;
+        }
+      });
+    }
   }
 
   void selecionarImagem() async {
@@ -138,7 +196,7 @@ class _MemoPageState extends State<MemoPage> {
                             ),
                             padding: EdgeInsets.all(5),
                             child: Text(
-                              '00:00',
+                              '${cont ~/ 60 < 10 ? '0${cont ~/ 60}' : cont ~/ 60}:${cont % 60 < 10 ? '0${cont % 60}' : cont % 60}',
                               style: TextStyle(
                                 color: corRoxoMedio,
                                 fontWeight: FontWeight.w500,
@@ -246,7 +304,16 @@ class _MemoPageState extends State<MemoPage> {
                                         'assets/images/${card['imagem']}',
                                         fit: BoxFit.cover,
                                       )
-                              : Container(color: corRoxoClaro),
+                              : GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      card['visivel'] = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    color: corRoxoClaro,
+                                  ),
+                                ),
                         ),
                       ],
                     );
@@ -257,12 +324,12 @@ class _MemoPageState extends State<MemoPage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: acaoClick ? startar : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: corRoxoMedio,
                 foregroundColor: corClara,
               ),
-              child: Text('START'),
+              child: Text(start),
             ),
           ),
         ],
