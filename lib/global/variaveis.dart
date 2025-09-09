@@ -9,3 +9,4 @@ BuildContext? contexto;
 EventChannel eventInternet = EventChannel('$caminhoCanal/internet'),
     eventFones = EventChannel('$caminhoCanal/fones');
 ValueNotifier<bool> valueConexao = ValueNotifier(false);
+List<dynamic> listPerguntas = [];

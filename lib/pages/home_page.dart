@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modulo_a1_pr/global/colors.dart';
@@ -19,6 +21,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void iniciar() async {
+    listPerguntas = jsonDecode(
+      await rootBundle.loadString('assets/jsons/bancoQuestoes.json'),
+    )['perguntas'];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!valueConexao.value && !popInternet) {
         popInternet = true;
@@ -147,7 +152,10 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushNamed('/quiz');
+                        },
                         title: Text(
                           'QuizMyBrain',
                           style: TextStyle(
