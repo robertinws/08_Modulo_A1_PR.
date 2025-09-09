@@ -78,6 +78,9 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void proximo() async {
+    if (paginaAtual == 1) {
+      confirmar = true;
+    }
     if (confirmar) {
       confirmar = false;
       alternativaSelecionada = -1;
