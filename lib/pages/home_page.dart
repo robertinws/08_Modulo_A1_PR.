@@ -201,7 +201,10 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushNamed('/memo');
+                          },
                           title: Text(
                             'MemoCheck',
                             style: TextStyle(
