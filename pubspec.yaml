@@ -64,6 +64,14 @@ flutter:
     - assets/images/bateria.png
     - assets/images/logo.png
     - assets/images/pessoa4.jpg
+    - assets/images/car1.jpg
+    - assets/images/car2.jpg
+    - assets/images/car3.jpg
+    - assets/images/car4.jpg
+    - assets/images/arara.jpg
+    - assets/images/macacoprego.jpg
+    - assets/images/onca.jpg
+    - assets/images/tamandua.jpg
     - assets/jsons/bancoQuestoes.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

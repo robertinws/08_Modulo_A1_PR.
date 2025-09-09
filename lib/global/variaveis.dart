@@ -11,3 +11,5 @@ EventChannel eventInternet = EventChannel('$caminhoCanal/internet'),
     eventSensor = EventChannel('$caminhoCanal/sensor');
 ValueNotifier<bool> valueConexao = ValueNotifier(false);
 List<dynamic> listPerguntas = [];
+List<Uint8List> listImages3 = [];
+MethodChannel methodChannel = MethodChannel('$caminhoCanal/main');

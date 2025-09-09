@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modulo_a1_pr/global/colors.dart';
+import 'package:modulo_a1_pr/global/variaveis.dart';
 
 class MemoPage extends StatefulWidget {
   const MemoPage({super.key});
@@ -10,6 +15,80 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
+  List<dynamic> listCards = [];
+  List<String> listImages1 = [
+        'arara.jpg',
+        'macacoprego.jpg',
+        'onca.jpg',
+        'tamandua.jpg',
+      ],
+      listImages2 = ['car1.jpg', 'car2.jpg', 'car3.jpg', 'car4.jpg'];
+  int tema = 0;
+  String start = 'START';
+
+  @override
+  void initState() {
+    super.initState();
+    contexto = context;
+    iniciar();
+  }
+
+  void iniciar() async {
+    listarCards();
+  }
+
+  void selecionarImagem() async {
+    List<dynamic> list = await methodChannel.invokeMethod('imagens');
+    if (list.isNotEmpty) {
+      if (listImages3.isNotEmpty) {
+        listImages3.clear();
+      }
+      for (var img in list) {
+        listImages3.add(base64Decode(img));
+      }
+      listarCards();
+      Fluttertoast.showToast(msg: 'Imagens selecionadas');
+      setState(() {});
+    }
+  }
+
+  void listarCards() async {
+    if (listCards.isNotEmpty) {
+      listCards.clear();
+    }
+    int tipo = 0;
+    for (int i = 0; i < 8; i++) {
+      int qntRepetida = 0;
+      for (var card in listCards) {
+        card['tipo'] == tipo ? qntRepetida++ : null;
+      }
+      if (qntRepetida >= 2) {
+        tipo++;
+      }
+      listCards.add({
+        'tipo': tipo,
+        'visivel': true,
+        'acertado': false,
+        'random': Random().nextInt((listCards.length + 1) * 100),
+        'imagem': tema == 0
+            ? listImages1[tipo]
+            : tema == 1
+            ? listImages2[tipo]
+            : listImages3[tipo],
+      });
+    }
+    embaralhar();
+    setState(() {});
+  }
+
+  void embaralhar() async {
+    listCards.sort(
+      (a, b) =>
+          a['random'].toString().compareTo(b['random'].toString()),
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -140,22 +219,34 @@ class _MemoPageState extends State<MemoPage> {
                         crossAxisSpacing: 10,
                       ),
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: 8,
+                  itemCount: listCards.length,
                   itemBuilder: (context, index) {
+                    final card = listCards[index];
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           width: 90,
                           height: 90,
+                          clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
-                            color: corRoxoClaro,
                             border: Border.all(
                               width: 1,
                               color: corRoxoMedio,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          child: card['visivel']
+                              ? tema == 2
+                                    ? Image.memory(
+                                        (card['imagem']),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        'assets/images/${card['imagem']}',
+                                        fit: BoxFit.cover,
+                                      )
+                              : Container(color: corRoxoClaro),
                         ),
                       ],
                     );
@@ -190,19 +281,42 @@ class _MemoPageState extends State<MemoPage> {
                 children: [
                   Text('Tema: '),
                   DropdownButton(
-                    value: 0,
+                    value: tema,
                     items: [
                       DropdownMenuItem(
                         value: 0,
                         child: Text('Animais da Amazonia'),
                       ),
+                      DropdownMenuItem(
+                        value: 1,
+                        child: Text('Carros'),
+                      ),
+                      DropdownMenuItem(
+                        value: 2,
+                        child: Text('Minhas Imagens'),
+                      ),
                     ],
-                    onChanged: (newValue) {},
+                    onChanged: (newValue) {
+                      newValue as int == 2
+                          ? listImages3.isEmpty
+                                ? Fluttertoast.showToast(
+                                    msg:
+                                        'Selecione 4 imagens na galeria',
+                                  )
+                                : setState(() {
+                                    tema = 2;
+                                    listarCards();
+                                  })
+                          : setState(() {
+                              tema = newValue;
+                              listarCards();
+                            });
+                    },
                   ),
                 ],
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: selecionarImagem,
                 icon: Icon(
                   Icons.settings,
                   color: corRoxoMedio,
