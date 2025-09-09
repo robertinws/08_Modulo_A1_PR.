@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modulo_a1_pr/global/colors.dart';
 import 'package:modulo_a1_pr/global/variaveis.dart';
 
@@ -206,7 +207,9 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          SystemNavigator.pop();
+                        },
                         title: Text(
                           'Sair',
                           style: TextStyle(
