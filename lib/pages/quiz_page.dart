@@ -29,7 +29,7 @@ class _QuizPageState extends State<QuizPage> {
 
   void iniciar() async {
     eventSensor.receiveBroadcastStream().listen((value) {
-      if (paginaAtual == 1) {
+      if (paginaAtual == 1 && entradaFeita && !animando) {
         if (value > 3) {
           setState(() {
             alternativaSelecionada = 0;
@@ -112,6 +112,7 @@ class _QuizPageState extends State<QuizPage> {
   void entradaAnimacao() async {
     await Future.delayed(Duration(seconds: 1), () {
       setState(() {
+        alternativaSelecionada = -1;
         entradaVF = true;
         animando = true;
       });
@@ -137,6 +138,7 @@ class _QuizPageState extends State<QuizPage> {
     await Future.delayed(Duration(seconds: 1), () {
       setState(() {
         animando = false;
+        entradaFeita = true;
       });
     });
   }
