@@ -12,7 +12,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   PageController pageController = PageController();
-  int paginaAtual = 1, perguntaAtual = 0;
+  int paginaAtual = 0, perguntaAtual = 0;
   List<String> listIdentificadores = ['a)', 'b)', 'c)', 'd)'];
 
   @override
@@ -113,7 +113,85 @@ class _QuizPageState extends State<QuizPage> {
                 )
               : Container(),
           paginaAtual == 2
-              ? SafeArea(child: Column(children: []))
+              ? SafeArea(
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 10,
+                      children: [
+                        Text(
+                          listPerguntas[perguntaAtual]['enunciado'],
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: corRoxoMedio,
+                          ),
+                        ),
+                        Flexible(
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 4,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                            itemCount: 3,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsetsGeometry.all(10),
+                                child: Draggable(
+                                  feedback: Material(
+                                    child: Text(
+                                      listPerguntas[perguntaAtual]['alternativas'][0][index],
+                                    ),
+                                  ),
+                                  child: Text(
+                                    listPerguntas[perguntaAtual]['alternativas'][0][index],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Flexible(
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 4,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: corRoxoMedio,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsGeometry.all(10),
+                                  child: Text(
+                                    listPerguntas[perguntaAtual]['alternativas'][1][index],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               : Container(),
         ],
       ),

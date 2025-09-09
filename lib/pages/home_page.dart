@@ -88,151 +88,153 @@ class _HomePageState extends State<HomePage> {
       ),
       extendBodyBehindAppBar: true,
       drawer: Drawer(
-        child: Column(
-          spacing: 10,
-          children: [
-            DrawerHeader(
-              child: Stack(
-                children: [
-                  Center(
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: corRoxoMedio,
+        child: SingleChildScrollView(
+          child: Column(
+            spacing: 10,
+            children: [
+              DrawerHeader(
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: corRoxoMedio,
+                          ),
+                          shape: BoxShape.circle,
                         ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        'assets/images/pessoa4.jpg',
-                        fit: BoxFit.cover,
+                        child: Image.asset(
+                          'assets/images/pessoa4.jpg',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 40,
+                        color: corRoxoMedio,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          title: Text(
+                            'Home',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          textColor: corRoxoMedio,
+                        ),
+                        Divider(color: corRoxoMedio),
+                      ],
+                    ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 40,
-                      color: corRoxoMedio,
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushNamed('/quiz');
+                          },
+                          title: Text(
+                            'QuizMyBrain',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          textColor: corRoxoMedio,
+                        ),
+                        Divider(color: corRoxoMedio),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          title: Text(
+                            'GeniusPLay',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          textColor: corRoxoMedio,
+                        ),
+                        Divider(color: corRoxoMedio),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          title: Text(
+                            'MemoCheck',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          textColor: corRoxoMedio,
+                        ),
+                        Divider(color: corRoxoMedio),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {
+                            SystemNavigator.pop();
+                          },
+                          title: Text(
+                            'Sair',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          textColor: corRoxoMedio,
+                        ),
+                        Divider(color: corRoxoMedio),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {},
-                        title: Text(
-                          'Home',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        textColor: corRoxoMedio,
-                      ),
-                      Divider(color: corRoxoMedio),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).pushNamed('/quiz');
-                        },
-                        title: Text(
-                          'QuizMyBrain',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        textColor: corRoxoMedio,
-                      ),
-                      Divider(color: corRoxoMedio),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {},
-                        title: Text(
-                          'GeniusPLay',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        textColor: corRoxoMedio,
-                      ),
-                      Divider(color: corRoxoMedio),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {},
-                        title: Text(
-                          'MemoCheck',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        textColor: corRoxoMedio,
-                      ),
-                      Divider(color: corRoxoMedio),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        onTap: () {
-                          SystemNavigator.pop();
-                        },
-                        title: Text(
-                          'Sair',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        textColor: corRoxoMedio,
-                      ),
-                      Divider(color: corRoxoMedio),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: Center(
