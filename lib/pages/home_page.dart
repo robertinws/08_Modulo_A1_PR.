@@ -176,7 +176,12 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.of(
+                              context,
+                            ).pushNamed('/genius');
+                          },
                           title: Text(
                             'GeniusPLay',
                             style: TextStyle(
