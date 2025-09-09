@@ -18,7 +18,45 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   String tipo = '';
 
-  void encerrar() async {}
+  @override
+  void initState() {
+    super.initState();
+    contexto = context;
+  }
+
+  void encerrar() async {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          backgroundColor: corEscuro,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 10,
+            children: [
+              Text(
+                'Score:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: corClara,
+                ),
+              ),
+              Text(
+                '$score',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: corClara,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void proximo() async {
     if (confirmar) {
