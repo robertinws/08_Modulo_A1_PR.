@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modulo_a1_pr/global/variaveis.dart';
 import 'package:modulo_a1_pr/pages/home_page.dart';
 import 'package:modulo_a1_pr/pages/loading_page.dart';
 
@@ -7,12 +8,17 @@ class AppController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => LoadingPage(),
-        '/home': (context) => HomePage(),
+    return ValueListenableBuilder(
+      valueListenable: valueConexao,
+      builder: (context, value, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => LoadingPage(),
+            '/home': (context) => HomePage(),
+          },
+        );
       },
     );
   }

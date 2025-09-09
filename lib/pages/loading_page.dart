@@ -17,6 +17,9 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   void iniciar() async {
+    eventInternet.receiveBroadcastStream().listen((value) {
+      valueConexao.value = value;
+    });
     battery.onBatteryStateChanged.listen((value) async {
       if (await battery.batteryLevel <= 20 && !popBateria) {
         popBateria = true;
