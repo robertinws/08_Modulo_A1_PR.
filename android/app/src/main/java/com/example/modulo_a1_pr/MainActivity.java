@@ -7,6 +7,8 @@ import io.flutter.embedding.engine.FlutterEngine;
 
 public class MainActivity extends FlutterActivity {
 
+    String caminhoCanal = "com.example.modulo_a1_pr";
+
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
