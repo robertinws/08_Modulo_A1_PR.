@@ -12,7 +12,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   PageController pageController = PageController();
-  int paginaAtual = 0, perguntaAtual = 0;
+  int paginaAtual = 1, perguntaAtual = 0;
   List<String> listIdentificadores = ['a)', 'b)', 'c)', 'd)'];
 
   @override
@@ -31,6 +31,7 @@ class _QuizPageState extends State<QuizPage> {
         foregroundColor: corRoxoMedio,
       ),
       body: PageView(
+        controller: pageController,
         children: [
           paginaAtual == 0
               ? SafeArea(
@@ -66,7 +67,48 @@ class _QuizPageState extends State<QuizPage> {
               ? SafeArea(
                   child: Padding(
                     padding: EdgeInsetsGeometry.all(20),
-                    child: Column(children: []),
+                    child: Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                      spacing: 10,
+                      children: [
+                        Text(
+                          listPerguntas[perguntaAtual]['enunciado'],
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: corRoxoMedio,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 20,
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                'Verdadeiro',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                'Falso',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Icon(Icons.screen_rotation, size: 100),
+                      ],
+                    ),
                   ),
                 )
               : Container(),
